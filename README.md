@@ -1,70 +1,81 @@
-# Getting Started with Create React App
+# Book Recommendation App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A simple full-stack application that recommends books for fans of *The Lord of the Rings*. The backend runs a Python script to compute book recommendations, and the frontend provides a user interface to view them.
 
-## Available Scripts
+## Prerequisites
 
-In the project directory, you can run:
+Before running the app, ensure the following are installed:
 
-### `npm start`
+- **Node.js** and **npm**: for both backend and frontend
+- **Docker** and **Docker Compose**: for MinIO service
+- **Python**: for running the recommendation script
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### 1. Backend Setup (BE)
 
-### `npm test`
+Navigate to the `BE` folder to install the backend dependencies:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    $cd BE
+    $npm install
 
-### `npm run build`
+### 2. Frontend Setup (UI)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Go to the `UI` folder to install the frontend dependencies:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+    $cd UI
+    $npm install
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### 3. MinIO Setup
 
-### `npm run eject`
+This project uses MinIO for storage. To set it up:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. Navigate to the MinIO mock services folder:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+    $cd ./book-app/BE/mock-services
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+2. Start the MinIO service:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+    $docker compose up -d
 
-## Learn More
+3. Create a bucket and upload the required parquet file:
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+    $mc mb myminio/data
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+    $mc cp --recursive ./BE/data/ myminio/data/      
 
-### Code Splitting
+4. Access the MinIO console at [http://localhost:9090](http://localhost:9090).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Running the App
 
-### Analyzing the Bundle Size
+### 1. Start the Backend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+To start the backend server, run:
 
-### Making a Progressive Web App
+    $cd BE
+    $node index.js
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+The backend will be available at [http://localhost:3001](http://localhost:3001).
 
-### Advanced Configuration
+### 2. Start the Frontend
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+To run the frontend, execute:
 
-### Deployment
+    $cd UI
+    $npm start
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+The frontend will be available at [http://localhost:3000](http://localhost:3000).
 
-### `npm run build` fails to minify
+## Backend API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The backend provides an API endpoint that runs a Python script to generate book recommendations.
+
+- **Endpoint**: `/getBooks`
+- **Method**: GET
+- **Response**: JSON object containing a list of recommended books, e.g. `{ "recommendedBooks": ["Book 1", "Book 2", "Book 3", ...] }`
+
+## File Structure
+
+- **Backend (BE)**: Handles API requests and executes the Python script for recommendations.
+- **Frontend (UI)**: Provides a user interface for viewing book recommendations.
+- **MinIO**: Local object storage service to store required data for the recommendation engine.

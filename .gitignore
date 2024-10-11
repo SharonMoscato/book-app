@@ -21,3 +21,14 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# minio
+BE/mock-services/data/.minio.sys/
+BE/mock-services/data/.bloomcycle.bin/
+BE/mock-services/data/.usage-cache.bin/
+BE/mock-services/data/.usage-cache.bin.bkp/
+BE/mock-services/data/.usage.json
+BE/mock-services/data/.metadata.bin/
+BE/mock-services/data/.trash/
+
+node_modules/
