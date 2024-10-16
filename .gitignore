@@ -32,3 +32,5 @@ BE/mock-services/data/.metadata.bin/
 BE/mock-services/data/.trash/
 
 node_modules/
+
+__pycache__
